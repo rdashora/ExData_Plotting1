@@ -1,0 +1,11 @@
+library(dplyr)
+RawData <- read.table("./Datasets/household_power_consumption.txt", sep = ";", header = TRUE, na.string = "?")
+PowerConsumption <- subset(RawData, Date=="1/2/2007" | Date == "2/2/2007")
+RawData=NULL
+rm(RawData)
+PowerConsumption$Date <- as.Date(PowerConsumption$Date, "%d/%m/%Y")
+PowerConsumption$Time <- strptime(PowerConsumption$Time, "%H:%M:%S")
+PowerConsumption <- tbl_df(PowerConsumption)
+hist(PowerConsumption$Global_active_power, main="Global Active Power", xlab="Global Active Power (kilowatts)", col="Red")
+dev.copy(png, "plot1.png", width=480, height=480)
+dev.off(which=dev.cur())
